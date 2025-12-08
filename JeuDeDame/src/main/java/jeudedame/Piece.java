@@ -4,11 +4,13 @@
  */
 package jeudedame;
 
+import java.io.Serializable;
+
 /**
  *
  * @author lenovo
  */
-public class Piece {
+public class Piece implements Serializable {
     private Point2D pos;
     private String couleur;
     private Boolean isKing;
