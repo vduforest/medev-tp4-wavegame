@@ -4,13 +4,13 @@
  */
 package jeudedame;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * Abscisse x et ordonnée y d'un point dans un plan cartésien
  * @author vdufo
  */
-public class Point2D {
+public class Point2D implements Serializable {
 
     /**
      * Abscisse x
@@ -108,7 +108,11 @@ public class Point2D {
      * @return
      */
     public boolean equals(Point2D A){
-        return A.getX()== this.getX() && A.getY()==this.getY();
+        if ((this==null) || (A==null)){
+            return false;
+        }   else{
+            return A.getX()== this.getX() && A.getY()==this.getY();
+        }    
     }
     /**
      *
@@ -127,6 +131,11 @@ public class Point2D {
      * @return
      */
     public double distance(Point2D p){
-        return Math.sqrt(p.x*p.x+p.y*p.y);
+        if ((p==null)||(this==null)){
+            return -1;
+        } else{
+            return Math.sqrt(Math.pow((p.x-this.x),2)+Math.pow((p.y-this.y),2));
+        }
+        
     } 
 }
