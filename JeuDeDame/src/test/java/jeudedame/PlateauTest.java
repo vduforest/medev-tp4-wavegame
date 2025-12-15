@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author vdufo
  */
 public class PlateauTest {
-    
+
     private static final int TAILLE = 10;
 
     // Accès aux cases privées pour certains tests
@@ -26,27 +26,36 @@ public class PlateauTest {
         f.setAccessible(true);
         return (Piece[][]) f.get(plateau);
     }
-    
+
+    private void viderPlateau(Plateau plateau) throws Exception {
+        Piece[][] grille = getGrille(plateau);
+        for (int x = 0; x < 10; x++) {
+            for (int y = 0; y < 10; y++) {
+                grille[x][y] = null;
+            }
+        }
+    }
+
     public PlateauTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
 
-     @Test
+    @Test
     public void testConstructeurInitialisation() throws Exception {
         Plateau plateau = new Plateau();
         Piece[][] grille = getGrille(plateau);
@@ -60,8 +69,11 @@ public class PlateauTest {
             for (int x = 0; x < TAILLE; x++) {
                 Piece p = grille[x][y];
                 if (p != null) {
-                    if (p.getCouleur().equals("NOIR")) nbNoir++;
-                    else if (p.getCouleur().equals("BLANC")) nbBlanc++;
+                    if (p.getCouleur().equals("NOIR")) {
+                        nbNoir++;
+                    } else if (p.getCouleur().equals("BLANC")) {
+                        nbBlanc++;
+                    }
                 }
             }
         }
@@ -84,7 +96,7 @@ public class PlateauTest {
         Piece[][] grille = getGrille(plateau);
 
         // Placer un pion blanc en (7,6)
-        Piece pion = new Piece(new Point2D(7,6), "BLANC");
+        Piece pion = new Piece(new Point2D(7, 6), "BLANC");
         grille[7][6] = pion;
 
         plateau.bougerPiece(7, 6, 6, 5);
@@ -111,11 +123,11 @@ public class PlateauTest {
         Piece[][] grille = getGrille(plateau);
 
         // Placer une dame blanche et une noire
-        Piece dameBlanc = new Piece(new Point2D(0,0), "BLANC");
+        Piece dameBlanc = new Piece(new Point2D(0, 0), "BLANC");
         dameBlanc.passerDame();
         grille[0][0] = dameBlanc;
 
-        Piece dameNoir = new Piece(new Point2D(1,1), "NOIR");
+        Piece dameNoir = new Piece(new Point2D(1, 1), "NOIR");
         dameNoir.passerDame();
         grille[1][1] = dameNoir;
 
@@ -130,36 +142,40 @@ public class PlateauTest {
         Plateau plateau = new Plateau();
         Piece[][] grille = getGrille(plateau);
 
+        // On vide la grille pour tester correctement les cases vides
+        viderPlateau(plateau);
+
         // Case vide pair : doit renvoyer ". "
-        assertEquals(". ", invokeGetSymboleCase(plateau, 0,0));
+        assertEquals(". ", invokeGetSymboleCase(plateau, 0, 0));
 
         // Case vide impair : "_ "
-        assertEquals("_ ", invokeGetSymboleCase(plateau, 1,0));
+        assertEquals("_ ", invokeGetSymboleCase(plateau, 1, 0));
 
         // Pion blanc : "O "
-        Piece pBlanc = new Piece(new Point2D(2,2), "BLANC");
+        Piece pBlanc = new Piece(new Point2D(2, 2), "BLANC");
         grille[2][2] = pBlanc;
-        assertEquals("O ", invokeGetSymboleCase(plateau, 2,2));
+        assertEquals("O ", invokeGetSymboleCase(plateau, 2, 2));
 
         // Pion noir : "X "
-        Piece pNoir = new Piece(new Point2D(3,3), "NOIR");
+        Piece pNoir = new Piece(new Point2D(3, 3), "NOIR");
         grille[3][3] = pNoir;
-        assertEquals("X ", invokeGetSymboleCase(plateau, 3,3));
+        assertEquals("X ", invokeGetSymboleCase(plateau, 3, 3));
 
         // Dame blanche : "# "
         pBlanc.passerDame();
-        assertEquals("# ", invokeGetSymboleCase(plateau, 2,2));
+        assertEquals("# ", invokeGetSymboleCase(plateau, 2, 2));
 
         // Dame noire : "@ "
         pNoir.passerDame();
-        assertEquals("@ ", invokeGetSymboleCase(plateau, 3,3));
+        assertEquals("@ ", invokeGetSymboleCase(plateau, 3, 3));
     }
 
-    // Méthode utilitaire pour accéder à la méthode privée getSymboleCase
+    /**
+     * Utilitaire pour appeler la méthode privée getSymboleCase via réflexion
+     */
     private String invokeGetSymboleCase(Plateau plateau, int x, int y) throws Exception {
         java.lang.reflect.Method m = Plateau.class.getDeclaredMethod("getSymboleCase", int.class, int.class);
         m.setAccessible(true);
         return (String) m.invoke(plateau, x, y);
     }
-    
 }
