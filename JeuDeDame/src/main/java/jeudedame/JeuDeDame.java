@@ -31,7 +31,7 @@ public class JeuDeDame {
         System.out.println("Au revoir !");
     }
     
-    private static void afficherBienvenue() {
+    public static void afficherBienvenue() {
         System.out.println("=== BIENVENUE AU JEU DE DAMES ===");
         System.out.println("Règles : Tapez les coordonnées 'x1 y1 x2 y2'.");
         System.out.println("Exemple : '0 6 1 5' déplace le pion de la colonne 0, ligne 6 vers colonne 1, ligne 5.");
@@ -39,7 +39,7 @@ public class JeuDeDame {
         System.out.println("\n-----------------------------");
     }
     
-    private static boolean traiterCommande(String entree, Jeu partie) {
+    public static boolean traiterCommande(String entree, Jeu partie) {
         try {
             if (entree.equals("quitter")) return false;
             
@@ -61,19 +61,19 @@ public class JeuDeDame {
         }
     }
     
-    private static void sauvegarderPartie(String entree, Jeu partie) {
+    public static void sauvegarderPartie(String entree, Jeu partie) {
         String nom = entree.split(" ")[1];
         partie.sauvegarder(nom);
     }
     
-    private static Jeu chargerPartie(String entree, Jeu partie) {
+    public static Jeu chargerPartie(String entree, Jeu partie) {
         String nom = entree.split(" ")[1];
         Jeu nouvellePartie = Jeu.charger(nom);
         if (nouvellePartie != null) return nouvellePartie;
         return partie;
     }
     
-    private static void jouerCoup(String entree, Jeu partie) {
+    public static void jouerCoup(String entree, Jeu partie) {
         String[] coords = entree.split(" ");
         int x1 = Integer.parseInt(coords[0]);
         int y1 = Integer.parseInt(coords[1]);
