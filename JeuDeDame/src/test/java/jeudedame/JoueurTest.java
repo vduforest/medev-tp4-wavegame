@@ -18,40 +18,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class JoueurTest {
-    public static void main(String[] args) {
-        System.out.println("--- Démarrage des tests Joueur ---");
+    @Test
+    void testCreationJoueurBlanc() {
+        Joueur j1 = new Joueur("Alice", false);
 
-        // 1. Test Creation
-        Joueur j1 = new Joueur("Alice", false); // Blanc
-        Joueur j2 = new Joueur("Bob", true);    // Noir
+        assertEquals("Alice", j1.getNom());
+        assertEquals(false, j1.isNoir());
+    }
 
-        if (j1.getNom().equals("Alice") && j1.isNoir() == false) {
-            System.out.println("Test 1 (Création Blanc): OK");
-        } else {
-            System.out.println("Test 1: FAIL");
-        }
+    @Test
+    void testCreationJoueurNoir() {
+        Joueur j2 = new Joueur("Bob", true);
 
-        if (j2.getNom().equals("Bob") && j2.isNoir() == true) {
-            System.out.println("Test 2 (Création Noir): OK");
-        } else {
-            System.out.println("Test 2: FAIL");
-        }
+        assertEquals("Bob", j2.getNom());
+        assertEquals(true, j2.isNoir());
+    }
 
-        // 2. Test Display (toString)
-        String affichage = j2.toString();
-        if (affichage.equals("Bob [Noir]")) {
-             System.out.println("Test 3 (Affichage): OK");
-        } else {
-             System.out.println("Test 3: FAIL -> " + affichage);
-        }
+    @Test
+    void testToString() {
+        Joueur j2 = new Joueur("Bob", true);
 
-        // 3. Test Serializable (Simulation)
-        if (j1 instanceof java.io.Serializable) {
-            System.out.println("Test 4 (Prêt pour sauvegarde): OK");
-        } else {
-            System.out.println("Test 4: FAIL");
-        }
-        
-        System.out.println("--- Fin des tests ---");
+        assertEquals("Bob [Noir]", j2.toString());
+    }
+
+    @Test
+    void testSerializable() {
+        Joueur j1 = new Joueur("Alice", false);
+
+        assertEquals(true, j1 instanceof java.io.Serializable);
     }
 }
