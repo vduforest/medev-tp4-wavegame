@@ -1,100 +1,87 @@
 package jeudedame;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
- */
-
-import jeudedame.Point2D;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 
-/**
- *
- * @author vdufo
- */
 public class Point2DTest {
-    
-    public Point2DTest() {
-    }
-    
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
+
+    private Point2D point;
+
     @BeforeEach
-    public void setUp() {
+    void setUp() {
+        point = new Point2D(1, 2);
     }
-    
+
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
+        point = null;
     }
 
-    /**
-     * Test of equals method, of class Point2D.
-     */
     @Test
-    public void testEquals() {
-        System.out.println("equals");
-        Point2D A = null;
-        Point2D instance = new Point2D();
-        boolean expResult = false;
-        boolean result = instance.equals(A);
-        assertEquals(expResult, result);
-        
-        Point2D B = new Point2D(1,2);
-        Point2D C = new Point2D(B);
-        Point2D D = new Point2D(2,3);
-        Point2D E = new Point2D(1,2);
-        
-        boolean expResult2 = true;
-        boolean expResult3 = false;
-        boolean expResult4 = true;
-        
-        boolean result2 = B.equals(C);
-        boolean result3 = B.equals(D);
-        boolean result4 = C.equals(E);
-        
-        assertEquals(expResult2, result2);
-        assertEquals(expResult3, result3);
-        assertEquals(expResult4, result4);
+    void testConstructeurs() {
+        Point2D p1 = new Point2D(); // constructeur par défaut
+        assertEquals(0, p1.getX());
+        assertEquals(0, p1.getY());
+
+        Point2D p2 = new Point2D(5, 6);
+        assertEquals(5, p2.getX());
+        assertEquals(6, p2.getY());
+
+        Point2D p3 = new Point2D(p2); // constructeur par copie
+        assertEquals(5, p3.getX());
+        assertEquals(6, p3.getY());
     }
 
-    /**
-     * Test of distance method, of class Point2D.
-     */
     @Test
-    public void testDistance() {
-        System.out.println("Test distance");
-        
-        // Test si un point est null
-        Point2D p = null;
-        Point2D instance = new Point2D(1,2);
-        double expResult = -1.0;
-        double result = instance.distance(p);
-        assertEquals(expResult, result, 0);
-        
-        // Test si 2 points sont au même endroit
-        Point2D p2 = new Point2D(1,2);
-        Point2D instance2 = new Point2D(p2);
-        double expResult2 = 0.0;
-        double result2 = instance2.distance(p2);
-        assertEquals(expResult2, result2, 0);
-        
-        // Test pour 2 points quelconques
-        Point2D p3 = new Point2D(4,6);
-        Point2D instance3 = new Point2D(1,2);
-        double expResult3 = 5.0;
-        double result3 = instance3.distance(p3);
-        assertEquals(expResult3, result3, 0);
+    void testGettersSetters() {
+        point.setX(10);
+        point.setY(20);
+        assertEquals(10, point.getX());
+        assertEquals(20, point.getY());
     }
-    
+
+    @Test
+    void testSetPosition() {
+        point.setPosition(7, 8);
+        assertEquals(7, point.getX());
+        assertEquals(8, point.getY());
+    }
+
+    @Test
+    void testTranslate() {
+        point.translate(3, 4);
+        assertEquals(4, point.getX()); // 1+3
+        assertEquals(6, point.getY()); // 2+4
+    }
+
+    @Test
+    void testEquals() {
+        assertFalse(point.equals(null));
+
+        Point2D same = new Point2D(1,2);
+        Point2D diff = new Point2D(2,3);
+        Point2D copy = new Point2D(same);
+
+        assertTrue(point.equals(same));
+        assertFalse(point.equals(diff));
+        assertTrue(same.equals(copy));
+    }
+
+    @Test
+    void testDistance() {
+        assertEquals(-1.0, point.distance(null), 0);
+
+        Point2D same = new Point2D(1,2);
+        assertEquals(0.0, point.distance(same), 0);
+
+        Point2D p2 = new Point2D(4,6);
+        assertEquals(5.0, point.distance(p2), 0);
+    }
+
+    @Test
+    void testToString() {
+        assertEquals("[1;2]", point.toString());
+    }
 }
