@@ -11,8 +11,11 @@ package jeudedame;
 import java.io.Serializable;
 
 public class Plateau implements Serializable {
+
     private Piece[][] grille;
     private final int TAILLE = 10;
+
+    private static final String COULEUR_BLANC = "BLANC";
 
     public Plateau() {
         grille = new Piece[TAILLE][TAILLE];
@@ -26,7 +29,7 @@ public class Plateau implements Serializable {
                     if (y < 4) {
                         grille[x][y] = new Piece(new Point2D(x, y), "NOIR");
                     } else if (y > 5) {
-                        grille[x][y] = new Piece(new Point2D(x, y), "BLANC");
+                        grille[x][y] = new Piece(new Point2D(x, y), COULEUR_BLANC);
                     }
                 }
             }
@@ -53,16 +56,25 @@ public class Plateau implements Serializable {
         for (int y = 0; y < TAILLE; y++) {
             System.out.print(y + " ");
             for (int x = 0; x < TAILLE; x++) {
-                Piece p = grille[x][y];
-                if (p == null) {
-                    System.out.print(((x + y) % 2 == 0) ? ". " : "_ ");
-                } else {
-                    String sym = p.getCouleur().equals("BLANC") ? "O " : "X ";
-                    if (p.getIsKing()) sym = p.getCouleur().equals("BLANC") ? "# " : "@ ";
-                    System.out.print(sym);
-                }
+                System.out.print(getSymboleCase(x, y));
             }
             System.out.println();
+        }
+    }
+
+    /**
+     * Retourne le symbole à afficher pour la case (x,y)
+     */
+    private String getSymboleCase(int x, int y) {
+        Piece p = grille[x][y];
+        if (p == null) {
+            return ((x + y) % 2 == 0) ? ". " : "_ ";
+        }
+
+        if (p.getIsKing()) {
+            return p.getCouleur().equals(COULEUR_BLANC) ? "# " : "@ ";
+        } else {
+            return p.getCouleur().equals(COULEUR_BLANC) ? "O " : "X ";
         }
     }
 
