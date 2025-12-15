@@ -40,6 +40,14 @@ public class Plateau implements Serializable {
         return null;
     }
 
+    public Piece[][] getGrille() {
+        return grille;
+    }
+
+    public void setGrille(Piece[][] grille) {
+        this.grille = grille;
+    }
+
     public void afficher() {
         System.out.println("  0 1 2 3 4 5 6 7 8 9");
         for (int y = 0; y < TAILLE; y++) {
